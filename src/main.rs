@@ -22,9 +22,8 @@ fn main() {
             };
             let mut reader = io::BufReader::new(file);
             let mut contents = String::new();
-            let bytes_read;
             match reader.read_to_string(&mut contents) {
-                Ok(b) => bytes_read = b,
+                Ok(_) => (),
                 Err(error) => {
                     eprintln!("{}", error);
                     process::exit(1);
