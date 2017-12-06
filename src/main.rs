@@ -1,6 +1,8 @@
 use std::{env, fs, io, process};
 use std::io::Read;
 
+mod lexer;
+
 fn main() {
     for (i, arg) in env::args().enumerate() {
         if i == 0 {
@@ -26,6 +28,8 @@ fn main() {
                 }
             };
             println!("{}", contents);
+            let tokens = lexer::lex(contents);
+            println!("{:?}", tokens);
         }
     }
 }
