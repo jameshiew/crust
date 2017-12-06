@@ -23,15 +23,15 @@ fn main() {
             let mut reader = io::BufReader::new(file);
             let mut contents = String::new();
             match reader.read_to_string(&mut contents) {
-                Ok(_) => (),
+                Ok(_) => {
+                    println!("{}", contents);
+                    println!("{:?}", lexer::lex(contents.chars()));
+                },
                 Err(error) => {
                     eprintln!("{}", error);
                     process::exit(1);
                 }
             };
-            println!("{}", contents);
-            let tokens = lexer::lex(contents.chars());
-            println!("{:?}", tokens);
         }
     }
 }
