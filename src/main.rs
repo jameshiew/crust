@@ -1,3 +1,5 @@
+extern crate regex;
+
 use std::{env, fs, io, process};
 use std::io::Read;
 
