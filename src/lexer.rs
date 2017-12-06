@@ -16,6 +16,10 @@ pub enum Token<'a> {
     IntegerLiteral(&'a str),
 }
 
-pub fn lex<'a>(stream: String) -> Vec<Token<'a>> {
-    vec![]
+pub fn lex<'a, I>(stream: I) -> Vec<Token<'a>> where I: Iterator{
+    let mut tokens = vec![];
+    for character in stream {
+
+    }
+    tokens
 }

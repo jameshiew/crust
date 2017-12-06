@@ -28,7 +28,7 @@ fn main() {
                 }
             };
             println!("{}", contents);
-            let tokens = lexer::lex(contents);
+            let tokens = lexer::lex(contents.chars());
             println!("{:?}", tokens);
         }
     }
