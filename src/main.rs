@@ -25,7 +25,8 @@ fn main() {
             match reader.read_to_string(&mut contents) {
                 Ok(_) => {
                     println!("{}", contents);
-                    println!("{:?}", lexer::lex(contents.chars()));
+                    let mut lexer = lexer::Lexer::new();
+                    println!("{:?}", lexer.lex(contents.chars()));
                 },
                 Err(error) => {
                     eprintln!("{}", error);
