@@ -29,7 +29,7 @@ fn main() {
                     let mut lexer = lexer::Lexer::new();
                     let tokens = lexer.lex(contents.chars());
                     println!("Tokens: {:?}", tokens);
-                    println!("Program: {:?}", ast::parse(tokens));
+                    println!("AST: {:?}", ast::parse(tokens));
                 },
                 Err(error) => {
                     eprintln!("{}", error);

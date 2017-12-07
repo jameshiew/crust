@@ -1,13 +1,14 @@
 use std::str;
 use regex::Regex;
+use std::collections::VecDeque;
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Keyword {
     Int,
     Return,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Token {
     OpenBrace,
     CloseBrace,
@@ -21,14 +22,14 @@ pub enum Token {
 }
 
 pub struct Lexer {
-    tokens: Vec<Token>,
+    tokens: VecDeque<Token>,
     current: Vec<char>,
 }
 
 impl Lexer {
     pub fn new() -> Lexer {
         Lexer {
-            tokens: vec!(),
+            tokens: VecDeque::new(),
             current: vec!(),
         }
     }
@@ -52,11 +53,11 @@ impl Lexer {
             _ if IDENTIFIER.is_match(str) => Token::Identifier(string.clone()),
             _ => Token::Unknown(string.clone()),
         };
-        self.tokens.push(token);
+        self.tokens.push_back(token);
         self.current = vec!();
     }
 
-    pub fn lex(&mut self, stream: str::Chars) -> &Vec<Token> {
+    pub fn lex(&mut self, stream: str::Chars) -> &mut VecDeque<Token> {
         for character in stream {
             match character {
                 _ if character.is_whitespace() => {
@@ -64,27 +65,27 @@ impl Lexer {
                 },
                 '{' => {
                     self.consume();
-                    self.tokens.push(Token::OpenBrace);
+                    self.tokens.push_back(Token::OpenBrace);
                 }
                 '}' => {
                     self.consume();
-                    self.tokens.push(Token::CloseBrace);
+                    self.tokens.push_back(Token::CloseBrace);
                 }
                 '(' => {
                     self.consume();
-                    self.tokens.push(Token::OpenParenthesis);
+                    self.tokens.push_back(Token::OpenParenthesis);
                 }
                 ')' => {
                     self.consume();
-                    self.tokens.push(Token::CloseParenthesis);
+                    self.tokens.push_back(Token::CloseParenthesis);
                 }
                 ';' => {
                     self.consume();
-                    self.tokens.push(Token::Semicolon);
+                    self.tokens.push_back(Token::Semicolon);
                 }
                 _ => self.current.push(character),
             }
         }
-        &self.tokens
+        &mut self.tokens
     }
 }
