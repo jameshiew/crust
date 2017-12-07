@@ -1,4 +1,5 @@
 use lexer;
+use std::result::Result;
 
 #[derive(Debug)]
 pub enum Expression {
@@ -20,12 +21,14 @@ pub enum Program {
     Main(FunctionDeclaration),
 }
 
-pub fn parse(tokens: &Vec<lexer::Token>) -> Program {
-    Program::Main(
-        FunctionDeclaration::Function(
-            String::from("test"),
-            Statement::Return(
-                Expression::Constant(1),
+pub fn parse(tokens: &Vec<lexer::Token>) -> Result<Program, &str> {
+    Ok(
+        Program::Main(
+            FunctionDeclaration::Function(
+                String::from("test"),
+                Statement::Return(
+                    Expression::Constant(1),
+                )
             )
         )
     )
