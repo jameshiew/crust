@@ -4,6 +4,7 @@ extern crate regex;
 use std::{env, fs, io, process};
 use std::io::Read;
 
+mod ast;
 mod lexer;
 
 fn main() {
@@ -24,9 +25,11 @@ fn main() {
             let mut contents = String::new();
             match reader.read_to_string(&mut contents) {
                 Ok(_) => {
-                    println!("{}", contents);
+                    println!("Contents: {}", contents);
                     let mut lexer = lexer::Lexer::new();
-                    println!("{:?}", lexer.lex(contents.chars()));
+                    let tokens = lexer.lex(contents.chars());
+                    println!("Tokens: {:?}", tokens);
+                    println!("Program: {:?}", ast::parse(tokens));
                 },
                 Err(error) => {
                     eprintln!("{}", error);
