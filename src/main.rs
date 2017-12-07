@@ -4,6 +4,7 @@ extern crate regex;
 use std::{env, fs, io, process};
 use std::io::Read;
 
+mod assembler;
 mod ast;
 mod lexer;
 
@@ -29,7 +30,9 @@ fn main() {
                     let mut lexer = lexer::Lexer::new();
                     let tokens = lexer.lex(contents.chars());
                     println!("Tokens: {:?}", tokens);
-                    println!("AST: {:?}", ast::parse(tokens));
+                    let abstract_syntax_tree = ast::parse(tokens).unwrap();
+                    println!("AST: {:?}", abstract_syntax_tree);
+                    println!("Assembly: {:?}", assembler::assemble(abstract_syntax_tree));
                 },
                 Err(error) => {
                     eprintln!("{}", error);
