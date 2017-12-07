@@ -8,6 +8,13 @@ pub enum Keyword {
     Return,
 }
 
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub enum Operator {
+    Negation,
+    BitwiseComplement,
+    LogicalNegation,
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
     OpenBrace,
@@ -18,6 +25,7 @@ pub enum Token {
     Keyword(Keyword),
     Identifier(String),
     IntegerLiteral(String),
+    Operator(Operator),
     Unknown(String),
 }
 
@@ -82,6 +90,18 @@ impl Lexer {
                 ';' => {
                     self.consume();
                     self.tokens.push_back(Token::Semicolon);
+                }
+                '-' => {
+                    self.consume();
+                    self.tokens.push_back(Token::Operator(Operator::Negation));
+                }
+                '~' => {
+                    self.consume();
+                    self.tokens.push_back(Token::Operator(Operator::BitwiseComplement));
+                }
+                '!' => {
+                    self.consume();
+                    self.tokens.push_back(Token::Operator(Operator::LogicalNegation));
                 }
                 _ => self.current.push(character),
             }
