@@ -16,7 +16,7 @@ impl ParseError {
     }
 }
 
-trait Parser {
+pub trait Parser {
     fn parse(tokens: &mut VecDeque<Token>) -> Result<Self, ParseError> where Self: Sized;
 }
 
@@ -150,8 +150,4 @@ impl Parser for Program {
         // only expecting one 'main' function for now
         Ok(Program::Main(FunctionDeclaration::parse(tokens).unwrap()))
     }
-}
-
-pub fn parse(tokens: &mut VecDeque<Token>) -> Result<Program, ParseError> {
-    Program::parse(tokens)
 }

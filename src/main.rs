@@ -2,12 +2,13 @@
 extern crate lazy_static;
 extern crate regex;
 
-use std::{env, fs, io, process};
-use std::io::{Read, Write};
-
 mod assembler;
 mod ast;
 mod lexer;
+
+use std::{env, fs, io, process};
+use std::io::{Read, Write};
+use ast::Parser;
 
 fn main() {
     for (i, arg) in env::args().enumerate() {
@@ -31,7 +32,7 @@ fn main() {
                     let mut lexer = lexer::Lexer::new();
                     let tokens = lexer.lex(contents.chars());
                     println!("Tokens: {:?}", tokens);
-                    let abstract_syntax_tree = ast::parse(tokens).unwrap();
+                    let abstract_syntax_tree = ast::Program::parse(tokens).unwrap();
                     println!("AST: {:?}", abstract_syntax_tree);
                     let assembly = assembler::assemble(abstract_syntax_tree);
                     println!("Assembly: {:?}", assembly);
