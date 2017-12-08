@@ -13,7 +13,8 @@ pub fn assemble(ast: Program) -> String {
                         match expression {
                             Expression::Constant(constant) => {
                                 writeln!(&mut assembly, "movl\t${}, %eax", constant).unwrap();
-                            }
+                            },
+                            _ => (),
                         }
                         writeln!(&mut assembly, "ret").unwrap();
                     }

@@ -1,4 +1,4 @@
-use lexer::{Token, Keyword};
+use lexer::{Token, Keyword, Operator};
 use std::result::Result;
 use std::marker::Sized;
 use std::collections::VecDeque;
@@ -22,6 +22,7 @@ trait Parser {
 
 #[derive(Debug)]
 pub enum Expression {
+    UnOp(Operator, Box<Expression>),
     Constant(i64),
 }
 
@@ -29,6 +30,13 @@ impl Parser for Expression {
     fn parse(tokens: &mut VecDeque<Token>) -> Result<Self, ParseError> {
         let token = tokens.pop_front().unwrap();
         match token {
+            Token::Operator(operator) => {
+                Ok(
+                    Expression::UnOp(
+                        operator, Box::new(Expression::parse(tokens).unwrap())
+                    )
+                )
+            }
             Token::IntegerLiteral(i) => {
                 let int = i.parse::<i64>().unwrap();
                 Ok(Expression::Constant(int))
