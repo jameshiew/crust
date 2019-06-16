@@ -8,6 +8,7 @@ build executable:
   script:
     - cargo build --release
   artifacts:
+    expire_in: 1 hour
     paths:
       - target/release/crust
 
