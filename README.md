@@ -1,4 +1,4 @@
-# crust ![pipeline status](https://gitlab.com/jameshiew/crust/badges/master/pipeline.svg)
+# crust [![pipeline status](https://gitlab.com/jameshiew/crust/badges/master/pipeline.svg)](https://gitlab.com/jameshiew/crust/commits/master)
 
 Writing a basic C compiler in Rust. Tests are in a git submodule.
 
