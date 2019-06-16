@@ -1,0 +1,20 @@
+stages:
+  - build
+  - test
+
+build executable:
+  image: rust:1.35.0
+  stage: build
+  script:
+    - cargo build --release
+  artifacts:
+    paths:
+      - target/release/crust
+
+run tests:
+  image: alpine:3.9.4
+  stage: test
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  script:
+    - tests/test_compiler.sh target/release/crust
