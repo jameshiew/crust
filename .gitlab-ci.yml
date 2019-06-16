@@ -16,5 +16,7 @@ run tests:
   stage: test
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
+  before_script:
+    - cd tests/
   script:
-    - tests/test_compiler.sh target/release/crust
+    - ./test_compiler.sh ../target/release/crust
