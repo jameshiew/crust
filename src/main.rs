@@ -48,17 +48,21 @@ fn main() {
 
                         use std::process::Command;
 
-                        Command::new("gcc")
+                        let output = Command::new("gcc")
                             .arg("-m32")
                             .arg(assembly_filename.clone())
                             .arg("-o")
                             .arg(base_filename.clone())
                             .output()
                             .unwrap();
+
+                        if !output.status.success() {
+                            eprintln!("Compilation failed");
+                        }
                     }
                 }
                 Err(error) => {
-                    eprintln!("{}", error);
+                    eprintln!("Error: {}", error);
                     process::exit(1);
                 }
             };
