@@ -20,4 +20,4 @@ run tests:
   before_script:
     - cd tests/
   script:
-    - ./test_compiler.sh ../target/release/crust
+    - ./test_compiler.sh ../target/release/crust 1
