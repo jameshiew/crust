@@ -12,7 +12,7 @@ build executable:
       - target/release/crust
 
 run tests:
-  image: alpine:3.9.4
+  image: bash:5.0.7
   stage: test
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
