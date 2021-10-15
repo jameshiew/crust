@@ -1,22 +1,62 @@
 stages:
-  - build
-  - test
+  - lint
+  - qa
+  - release
 
-build executable:
-  image: rust:1.35.0
-  stage: build
+image: rust:1.55.0
+
+cache:
+  untracked: true
+  paths:
+    - cargo/
+
+variables:
+  CARGO_HOME: $CI_PROJECT_DIR/cargo
+  RUST_BACKTRACE: FULL
+
+lint:
+  stage: lint
   script:
-    - cargo build --release
-  artifacts:
-    paths:
-      - target/release/crust
+    - rustup component add rustfmt
+    - cargo fmt -- --check
+
+qa:
+  stage: qa
+  script:
+    - cargo check --verbose
+    - rustup component add clippy
+    - cargo clippy --all-targets --all-features -- -D warnings
+    - cargo build --verbose --workspace
+    - cargo test --verbose --workspace
 
 run tests:
   image: gcc:9.1.0
-  stage: test
+  stage: qa
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   before_script:
     - cd tests/
   script:
     - ./test_compiler.sh ../target/release/crust 1
+
+updated:
+  stage: qa
+  image: rust:latest
+  script:
+    - cargo update --verbose
+    - cargo check --verbose
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: on_success
+  allow_failure: true
+
+release:
+  stage: release
+  script:
+    - cargo build --release --verbose --workspace
+  rules:
+    - if: '$CI_COMMIT_REF_NAME =~ /^(master|develop)$/'
+      when: on_success
+  artifacts:
+    paths:
+      - target/release/ave
