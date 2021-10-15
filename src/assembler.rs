@@ -1,4 +1,4 @@
-use ast::{Program, Expression, FunctionDeclaration, Statement};
+use ast::{Expression, FunctionDeclaration, Program, Statement};
 use std::fmt::Write;
 
 pub fn assemble(ast: Program) -> String {
@@ -19,7 +19,7 @@ pub fn assemble(ast: Program) -> String {
                     }
                 }
             }
-        }
+        },
     }
     assembly
 }

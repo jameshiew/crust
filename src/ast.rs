@@ -1,8 +1,7 @@
-use lexer::{Token, Keyword};
-use std::result::Result;
-use std::marker::Sized;
+use lexer::{Keyword, Token};
 use std::collections::VecDeque;
-
+use std::marker::Sized;
+use std::result::Result;
 
 #[derive(Debug)]
 pub struct ParseError {
@@ -17,7 +16,9 @@ impl ParseError {
 }
 
 trait Parser {
-    fn parse(tokens: &mut VecDeque<Token>) -> Result<Self, ParseError> where Self: Sized;
+    fn parse(tokens: &mut VecDeque<Token>) -> Result<Self, ParseError>
+    where
+        Self: Sized;
 }
 
 #[derive(Debug)]
@@ -32,10 +33,8 @@ impl Parser for Expression {
             Token::IntegerLiteral(i) => {
                 let int = i.parse::<i64>().unwrap();
                 Ok(Expression::Constant(int))
-            },
-            _ => Err(
-                ParseError::new("Expected constant".into(), token)
-            ),
+            }
+            _ => Err(ParseError::new("Expected constant".into(), token)),
         }
     }
 }
@@ -54,19 +53,13 @@ impl Parser for Statement {
                     let statement = Statement::Return(Expression::parse(tokens).unwrap());
                     let t = tokens.pop_front().unwrap();
                     if t != Token::Semicolon {
-                        return Err(
-                            ParseError::new("';' expected".into(), t)
-                        );
+                        return Err(ParseError::new("';' expected".into(), t));
                     }
                     return Ok(statement);
-                },
-                _ => Err(
-                    ParseError::new("Return keyword expected".into(), token)
-                ),
+                }
+                _ => Err(ParseError::new("Return keyword expected".into(), token)),
             },
-            _ => Err(
-                ParseError::new("Keyword expected".into(), token)
-            ),
+            _ => Err(ParseError::new("Keyword expected".into(), token)),
         }
     }
 }
@@ -87,22 +80,16 @@ impl Parser for FunctionDeclaration {
                         Token::Identifier(name) => {
                             let t = tokens.pop_front().unwrap();
                             if t != Token::OpenParenthesis {
-                                return Err(
-                                    ParseError::new("'(' expected".into(), t)
-                                );
+                                return Err(ParseError::new("'(' expected".into(), t));
                             }
                             // function arguments will go here
                             let t = tokens.pop_front().unwrap();
                             if t != Token::CloseParenthesis {
-                                return Err(
-                                    ParseError::new("')' expected".into(), t)
-                                );
+                                return Err(ParseError::new("')' expected".into(), t));
                             }
                             let t = tokens.pop_front().unwrap();
                             if t != Token::OpenBrace {
-                                return Err(
-                                    ParseError::new("'{' expected".into(), t)
-                                );
+                                return Err(ParseError::new("'{' expected".into(), t));
                             }
                             let function_declaration = FunctionDeclaration::Function(
                                 name.clone(),
@@ -110,24 +97,19 @@ impl Parser for FunctionDeclaration {
                             );
                             let t = tokens.pop_front().unwrap();
                             if t != Token::CloseBrace {
-                                return Err(
-                                    ParseError::new("'}' expected".into(), t)
-                                );
+                                return Err(ParseError::new("'}' expected".into(), t));
                             }
                             return Ok(function_declaration);
-                        },
-                        _ => Err(
-                            ParseError::new("Function name expected".into(), token)
-                        ),
+                        }
+                        _ => Err(ParseError::new("Function name expected".into(), token)),
                     }
-                },
-                _ => Err(
-                    ParseError::new("Return type of function declaration expected".into(), token)
-                )
+                }
+                _ => Err(ParseError::new(
+                    "Return type of function declaration expected".into(),
+                    token,
+                )),
             },
-            _ => Err(
-                ParseError::new("Keyword expected".into(), token)
-            ),
+            _ => Err(ParseError::new("Keyword expected".into(), token)),
         }
     }
 }

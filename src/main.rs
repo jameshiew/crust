@@ -2,8 +2,8 @@
 extern crate lazy_static;
 extern crate regex;
 
-use std::{env, fs, io, process};
 use std::io::{Read, Write};
+use std::{env, fs, io, process};
 
 mod assembler;
 mod ast;
@@ -12,9 +12,10 @@ mod lexer;
 fn main() {
     for (i, arg) in env::args().enumerate() {
         if i == 0 {
-            continue
+            continue;
         }
-        if i == 1 {  // filename
+        if i == 1 {
+            // filename
             let source_code_filehandle;
             match fs::File::open(arg.clone()) {
                 Ok(file) => source_code_filehandle = file,
@@ -43,7 +44,8 @@ fn main() {
 
                         let mut assembly_filename = base_filename.clone();
                         write!(assembly_filename, ".s").unwrap();
-                        let mut assembly_filehandle = fs::File::create(assembly_filename.clone()).unwrap();
+                        let mut assembly_filehandle =
+                            fs::File::create(assembly_filename.clone()).unwrap();
                         assembly_filehandle.write_all(assembly.as_bytes()).unwrap();
 
                         use std::process::Command;

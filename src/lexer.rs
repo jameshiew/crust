@@ -1,6 +1,6 @@
-use std::str;
 use regex::Regex;
 use std::collections::VecDeque;
+use std::str;
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Keyword {
@@ -30,13 +30,13 @@ impl Lexer {
     pub fn new() -> Lexer {
         Lexer {
             tokens: VecDeque::new(),
-            current: vec!(),
+            current: vec![],
         }
     }
 
     fn consume(&mut self) {
         if self.current.is_empty() {
-            return
+            return;
         }
         lazy_static! {
             static ref INT_KEYWORD: Regex = Regex::new(r"^int$").unwrap();
@@ -54,7 +54,7 @@ impl Lexer {
             _ => Token::Unknown(string.clone()),
         };
         self.tokens.push_back(token);
-        self.current = vec!();
+        self.current = vec![];
     }
 
     pub fn lex(&mut self, stream: str::Chars) -> &mut VecDeque<Token> {
@@ -62,7 +62,7 @@ impl Lexer {
             match character {
                 _ if character.is_whitespace() => {
                     self.consume();
-                },
+                }
                 '{' => {
                     self.consume();
                     self.tokens.push_back(Token::OpenBrace);
