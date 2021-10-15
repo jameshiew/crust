@@ -59,4 +59,4 @@ release:
       when: on_success
   artifacts:
     paths:
-      - target/release/ave
+      - target/release/crust
