@@ -55,7 +55,7 @@ impl Parser for Statement {
                     if t != Token::Semicolon {
                         return Err(ParseError::new("';' expected".into(), t));
                     }
-                    return Ok(statement);
+                    Ok(statement)
                 }
                 _ => Err(ParseError::new("Return keyword expected".into(), token)),
             },
@@ -92,14 +92,14 @@ impl Parser for FunctionDeclaration {
                                 return Err(ParseError::new("'{' expected".into(), t));
                             }
                             let function_declaration = FunctionDeclaration::Function(
-                                name.clone(),
+                                name,
                                 Statement::parse(tokens).unwrap(),
                             );
                             let t = tokens.pop_front().unwrap();
                             if t != Token::CloseBrace {
                                 return Err(ParseError::new("'}' expected".into(), t));
                             }
-                            return Ok(function_declaration);
+                            Ok(function_declaration)
                         }
                         _ => Err(ParseError::new("Function name expected".into(), token)),
                     }
